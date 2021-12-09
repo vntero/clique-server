@@ -9,8 +9,8 @@ Two separate repositories: Backend (REST API) with Node and Express. Frontend wi
 
 # MVP
 - Users can register and/or login
-- Create groups
-- Create events
+- CRUD groups
+- CRUD events
 
 # Frontend
 - pages and routes
