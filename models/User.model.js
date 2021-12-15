@@ -14,7 +14,7 @@ let UserSchema = new Schema({
 })
 
 // 2. Define your model
-let UserModel = model('user', UserSchema)
+let UserModel = model('User', UserSchema)
 
 // 3. Export your Model with 'module.exports'
 module.exports = UserModel

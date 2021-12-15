@@ -1,44 +1,21 @@
-const express = require('express')
-const router = express.Router()
+//IMPORT EXPRESS
+const router = require("express").Router();
 
-//we installed bcrypt.js
-const bcrypt = require('bcryptjs');
-
+//IMPORT USERMODEL
 const UserModel = require('../models/User.model');
 
+//IMPORT BCRYPT
+const bcrypt = require('bcryptjs');
+
+//-------------------------- ROUTES ------------------------
+//-------------- SIGN UP ---------------
 router.post('/signup', (req, res) => {
     const {name, email, password } = req.body;
-    console.log(name, email, password);
- 
-    // -----SERVER SIDE VALIDATION ----------
-    /* 
-    if (!name || !email || !password) {
-        res.status(500)
-          .json({
-            errorMessage: 'Please enter name, email and password'
-          });
-        return;  
-    }
-    const myRegex = new RegExp(/^[a-z0-9](?!.*?[^\na-z0-9]{2})[^\s@]+@[^\s@]+\.[^\s@]+[a-z0-9]$/);
-    if (!myRegex.test(email)) {
-        res.status(500).json({
-          errorMessage: 'Email format not correct'
-        });
-        return;  
-    }
-    const myPassRegex = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/);
-    if (!myPassRegex.test(password)) {
-      res.status(500).json({
-        errorMessage: 'Password needs to have 8 characters, a number and an Uppercase alphabet'
-      });
-      return;  
-    }
-    */
-
-    // NOTE: We have used the Sync methods here. 
-    // creating a salt 
+    //empty field verification is done directly in the forms
+    // password encryption
     let salt = bcrypt.genSaltSync(10);
     let hash = bcrypt.hashSync(password, salt);
+    //create the user in our db
     UserModel.create({name: name, email, passwordHash: hash})
       .then((user) => {
         // ensuring that we don't share the hash as well with the user
@@ -61,31 +38,14 @@ router.post('/signup', (req, res) => {
       })
 });
  
-// will handle all POST requests to http:localhost:5005/api/signin
+// POST for sign in - will handle all POST requests to http:localhost:5005/api/signin
 router.post('/signin', (req, res) => {
+  //create/require the variables we'll need  
     const {email, password } = req.body;
-
-    // -----SERVER SIDE VALIDATION ----------
-    /*
-    if ( !email || !password) {
-        res.status(500).json({
-            error: 'Please enter name, email and password',
-       })
-      return;  
-    }
-    const myRegex = new RegExp(/^[a-z0-9](?!.*?[^\na-z0-9]{2})[^\s@]+@[^\s@]+\.[^\s@]+[a-z0-9]$/);
-    if (!myRegex.test(email)) {
-        res.status(500).json({
-            error: 'Email format not correct',
-        })
-        return;  
-    }
-    */
-
     // Find if the user exists in the database 
     UserModel.findOne({email})
       .then((userData) => {
-           //check if passwords match
+           //if the email is found, check for password
           let doesItMatch = bcrypt.compareSync(password, userData.passwordHash)
           //if it matches
           if (doesItMatch) {

@@ -29,7 +29,7 @@ app.use(session({
     maxAge: 1000 * 24* 60 * 60 // your cookie will be cleared after these seconds
   },
   store: MongoStore.create({
-    mongoUrl: process.env.MONGODB_URI || "mongodb://localhost/ReactTodos",
+    mongoUrl: process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/clique",
     // Time to Live for sessions in DB. After that time it will delete it!
     ttl: 24* 60 * 60 // your session will be cleared after these seconds
   })
@@ -44,11 +44,11 @@ app.use(session({
 const allRoutes = require("./routes");
 app.use("/api", allRoutes);
 
-const eventRoutes = require("./routes/event.routes");
-app.use("/api", eventRoutes);
+// const eventRoutes = require("./routes/event.routes");
+// app.use("/api", eventRoutes);
 
-const groupRoutes = require("./routes/group.routes");
-app.use("/api", groupRoutes);
+// const groupRoutes = require("./routes/group.routes");
+// app.use("/api", groupRoutes);
 
 const authRoutes = require("./routes/auth.routes");
 app.use("/api", authRoutes);
