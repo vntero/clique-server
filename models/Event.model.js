@@ -6,11 +6,11 @@ const EventSchema = new Schema ({
     organiser: {type: String, text: true},
     title: {type: String, text: true},
     time: {},
-    location: {},
+    location: String,
     limit: {type: String, text: true},
     members: {type: Schema.Types.ObjectId, ref: 'User'},
     group: {type: Schema.Types.ObjectId, ref: 'Group'},
-    description: {},
+    description: String,
     id: String
 });
 

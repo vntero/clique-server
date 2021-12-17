@@ -10,8 +10,14 @@ let UserSchema = new Schema({
   passwordHash: {
     type: String,
     required: true
+  },
+  profilePic: String,
+  location: String},
+  {
+// this second object adds extra properties: 'createdAt' and 'updatedAt'
+    timestamps: true,
   }
-})
+  );
 
 // 2. Define your model
 let UserModel = model('User', UserSchema)

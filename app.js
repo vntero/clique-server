@@ -44,11 +44,11 @@ app.use(session({
 const allRoutes = require("./routes");
 app.use("/api", allRoutes);
 
-// const eventRoutes = require("./routes/event.routes");
-// app.use("/api", eventRoutes);
+const eventRoutes = require("./routes/event.routes");
+app.use("/api", eventRoutes);
 
-// const groupRoutes = require("./routes/group.routes");
-// app.use("/api", groupRoutes);
+const groupRoutes = require("./routes/group.routes");
+app.use("/api", groupRoutes);
 
 const authRoutes = require("./routes/auth.routes");
 app.use("/api", authRoutes);

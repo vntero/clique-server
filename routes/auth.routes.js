@@ -7,16 +7,19 @@ const UserModel = require('../models/User.model');
 //IMPORT BCRYPT
 const bcrypt = require('bcryptjs');
 
+//IMPORT CLOUDINARY
+const uploader = require('../middlewares/cloudinary.config.js');
+
 //-------------------------- ROUTES ------------------------
 //-------------- SIGN UP ---------------
 router.post('/signup', (req, res) => {
-    const {name, email, password } = req.body;
+    const {name, email, password, location} = req.body;
     //empty field verification is done directly in the forms
     // password encryption
     let salt = bcrypt.genSaltSync(10);
     let hash = bcrypt.hashSync(password, salt);
     //create the user in our db
-    UserModel.create({name: name, email, passwordHash: hash})
+    UserModel.create({name: name, email, passwordHash: hash, location: location})
       .then((user) => {
         // ensuring that we don't share the hash as well with the user
         user.passwordHash = "***";

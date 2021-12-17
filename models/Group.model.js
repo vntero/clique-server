@@ -4,10 +4,11 @@ const {Schema, model} = require("mongoose");
 // 1. Define your schema
 const GroupSchema = new Schema ({
     name: {type: String, text: true},
+    description: {type: String, text: true},
+    image: String,
     members: {type: Schema.Types.ObjectId, ref: 'User'},
     count: Number,
     events: {type: Schema.Types.ObjectId, ref: 'Event'}
-
 });
 
 // 2. Define your model

@@ -20,10 +20,10 @@ router.get('/events', (req, res) => {
 })
 
 // will handle all POST requests to http:localhost:5005/api/create
-router.post('/create', (req, res) => {  
-    const {name, description} = req.body;
+router.post('/create-event', (req, res) => {  
+    const {organiser, location, title, description} = req.body;
     
-    EventModel.create({name, description})
+    EventModel.create({organiser, location, title, description})
           .then((response) => {
                res.status(200).json(response)
           })
@@ -67,8 +67,8 @@ router.delete('/events/:id', (req, res) => {
 // will handle all PATCH requests to http:localhost:5005/api/todos/:id
 router.patch('/events/:id', (req, res) => {
     let id = req.params.id
-    const {title, description} = req.body;
-    EventModel.findByIdAndUpdate(id, {$set: {title: title, description: description}}, {new: true})
+    const {organiser, location, title, description} = req.body;
+    EventModel.findByIdAndUpdate(id, {$set: {organiser: organiser, location: location, title: title, description: description}}, {new: true})
           .then((response) => {
                res.status(200).json(response)
           })
