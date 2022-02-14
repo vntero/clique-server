@@ -103,4 +103,48 @@ router.get("/user", isLoggedIn, (req, res, next) => {
   res.status(200).json(req.session.loggedInUser);
 });
 
+//------------ EDIT USER PROFILE --------------
+//GET the profile info according to unique ID
+router.get("/profile/edit",isLoggedIn, (req, res, next) =>{
+  const id = req.session.myProperty._id
+  
+  UserModel.findById(id)
+  .then((profile)=>{
+    console.log("profile user id", profile);
+    res.render("auth/profile-update.hbs", {profile})
+  })
+  .catch((err) =>{
+    next(err)
+  })
+})
+//POST updated information
+router.post('/profile/edit', (req, res, next) => {
+  const {name,email, password} = req.body
+  let salt = bcrypt.genSaltSync(10);
+  let hash = bcrypt.hashSync(password, salt);
+  const id = req.session.myProperty._id
+  UserModel.findByIdAndUpdate(id, {name:name, email:email, password: hash})
+    .then(() => {
+      res.redirect("/profile")
+      //res.send("Profile updated successfully!")
+    })
+    .catch((err) => {
+      next(err)
+    })
+});
+
+//------------- DELETE USER PROFILE --------------
+
+router.post('/profile/delete', (req, res, next) => {
+  const id = req.session.myProperty._id
+  UserModel.findByIdAndDelete(id)
+    .then(() => {
+      console.log("User deleted!")
+      res.redirect("/")
+    })
+    .catch((err) => {
+      next(err)
+    })
+});
+
 module.exports = router;

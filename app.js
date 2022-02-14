@@ -14,6 +14,11 @@ const app = express();
 // ℹ️ This function is getting exported from the config folder. It runs most pieces of middleware
 require("./config")(app);
 
+// HEROKU DEPLOYMENT
+const path = require('path');
+const { assert } = require("console");
+app.use(express.static(path.join(__dirname, 'build')));
+
 // ---------------------------------------------------
 //         START OF EXPRESS-SESSION CONFIG
 // ---------------------------------------------------
@@ -52,6 +57,12 @@ app.use("/api", groupRoutes);
 
 const authRoutes = require("./routes/auth.routes");
 app.use("/api", authRoutes);
+
+// HEROKU DEPLOYMENT
+app.use((req, res, next) => {
+	// If no routes match, send them the React HTML.
+	res.sendFile(__dirname + "/build/index.html");
+});
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
